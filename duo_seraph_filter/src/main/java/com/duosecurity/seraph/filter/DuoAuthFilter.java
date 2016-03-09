@@ -57,7 +57,7 @@ public class DuoAuthFilter implements javax.servlet.Filter {
   private boolean failOpen = false;
 
   // vars to facilitate ip whitelisting.
-  private String ipregexp = "notanipaddress";
+  private String ipregexp;
   private String ip;
 
   /**
@@ -209,7 +209,8 @@ public class DuoAuthFilter implements javax.servlet.Filter {
 
     // compare the regex from the web.xml init param to see if we should bypass
     // two factor auth.
-    ip = request.getRemoteAddr();
+    //ip = request.getRemoteAddr();
+    ip = httpServletRequest.getHeader("X-Forwarded-For");
     if (ip.matches(ipregexp)) {
       needAuth = false;
     }
